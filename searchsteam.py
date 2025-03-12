@@ -53,7 +53,7 @@ def get_loginusers_vdf_path():
         return os.path.join(steam_path, 'config', 'loginusers.vdf')
     return None
 
-# Пример использования
+# надоело писать комменты ппц
 vdf_path = get_loginusers_vdf_path()
 if vdf_path:
     print(f"Файл loginusers.vdf найден: {vdf_path}")
