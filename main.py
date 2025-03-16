@@ -34,7 +34,6 @@ if not is_admin():
     run_as_admin()
 
 def resource_path(relative_path):
-    """Получаем абсолютный путь к ресурсу (для разных сборщиков и для AppData)."""
     try:
         base_path = sys._MEIPASS
     except Exception:
@@ -88,11 +87,10 @@ class MainWindow(QMainWindow):
         self.logo_label.mouseReleaseEvent = self.site_link
         self.logo_label.setCursor(Qt.PointingHandCursor)
 
-        # Создаем контейнер для логотипа с отступами
         logo_container = QWidget()
         logo_layout = QHBoxLayout(logo_container)
         logo_layout.addWidget(self.logo_label)
-        logo_layout.setAlignment(Qt.AlignCenter | Qt.AlignTop)  # Выравниваем влево и вверх
+        logo_layout.setAlignment(Qt.AlignCenter | Qt.AlignTop) 
 
         nav_layout.addWidget(logo_container)
 

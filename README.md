@@ -19,11 +19,10 @@ python main.py
 ```
 
 ## 📦 Компиляция в EXE
-Собрать `.exe` можно с помощью **PyInstaller** и **PyArmor**:
+Собрать `.exe` можно с помощью **PyInstaller**:
 ```bash
-pyarmor obfuscate --recursive main.py
-pyinstaller --icon=logo.ico --onefile --windowed --noupx \
-    --add-data "app;app" --add-data "assets;assets" dist/main/main.py
+pyinstaller --icon=logo.ico --onefile --windowed --noupx --add-data "app;app" --add-data "assets;assets" --version-file version.txt main.py
+
 ```
 
 ## ❓ FAQ
