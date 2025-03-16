@@ -8,11 +8,9 @@ from screeninfo import get_monitors
 
 
 class SystemInfoThread(QThread):
-    """Поток для получения информации о системе"""
     update_signal = Signal(str, str)
 
     def run(self):
-        """Запуск поиска информации о системе и обновление интерфейса"""
         self.update_signal.emit("Количество экранов:", str(self.get_screen_count()))
         self.update_signal.emit("Система:", platform.system())
         self.update_signal.emit("Объем ОЗУ:", self.get_ram_size())
@@ -21,7 +19,6 @@ class SystemInfoThread(QThread):
         self.update_signal.emit("Материнская плата:", self.get_motherboard_info())
 
     def get_screen_count(self):
-        """Возвращает количество экранов в системе"""
         try:
             monitors = get_monitors()
             return len(monitors)
@@ -29,12 +26,10 @@ class SystemInfoThread(QThread):
             return "Неизвестно"
 
     def get_ram_size(self):
-        """Возвращает объем ОЗУ"""
         ram_size = psutil.virtual_memory().total / (1024 ** 3)  # в гигабайтах
         return f"{ram_size:.2f} GB"
 
     def get_cpu_info(self):
-        """Возвращает точную информацию о процессоре"""
         try:
             c = wmi.WMI()
             cpu_info = c.query("SELECT Name FROM Win32_Processor")
@@ -43,7 +38,6 @@ class SystemInfoThread(QThread):
             return "Неизвестно"
 
     def get_gpu_info(self):
-        """Возвращает информацию о видеокарте"""
         try:
             gpu_info = subprocess.check_output('wmic path win32_videocontroller get caption', shell=True)
             return gpu_info.decode().strip().split("\n")[1].strip()
@@ -51,7 +45,6 @@ class SystemInfoThread(QThread):
             return "Неизвестно"
 
     def get_motherboard_info(self):
-        """Возвращает информацию о материнской плате"""
         try:
             c = wmi.WMI()
             motherboard_info = c.query("SELECT Manufacturer, Product FROM Win32_BaseBoard")
@@ -75,10 +68,10 @@ class OtherPage(QWidget):
         # Главный макет
         main_layout = QHBoxLayout(self)
 
-        # Левое окно с информацией
+        # Левое окно
         left_layout = QVBoxLayout()
         self.system_info_group = QGroupBox("Системная информация")
-        left_layout.setAlignment(Qt.AlignLeft)  # Выравниваем слева
+        left_layout.setAlignment(Qt.AlignLeft)
         self.system_info_group.setStyleSheet("""
             background-color: rgba(33, 76, 122, 40); 
             color: white;
@@ -105,9 +98,9 @@ class OtherPage(QWidget):
         self.system_info_group.setLayout(system_info_layout)
 
 
-        # Правое окно с кнопками
+        # Правое окно
         right_layout = QVBoxLayout()
-        right_layout.setAlignment(Qt.AlignCenter)  # Выравнивание по центру по вертикали
+        right_layout.setAlignment(Qt.AlignCenter) 
 
         # Кнопка "Использование данных"
         self.data_usage_button = QPushButton("Использование данных")
@@ -156,13 +149,12 @@ class OtherPage(QWidget):
         main_layout.addLayout(right_layout)
 
 
-        # Запускаем поток для получения данных о системе
+        # Получения данных о системе
         self.system_info_thread = SystemInfoThread()
         self.system_info_thread.update_signal.connect(self.update_system_info)
         self.system_info_thread.start()
 
     def update_system_info(self, label, value):
-        """Обновление меток с информацией о системе"""
         if label == "Количество экранов:":
             self.screen_count_label.setText(value)
         elif label == "Система:":

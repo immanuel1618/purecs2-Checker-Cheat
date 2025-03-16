@@ -16,7 +16,7 @@ class ProgramsPage(QWidget):
         left_group = QGroupBox("Анализ файлов / Директорий ПК")
         left_group.setStyleSheet("background-color: rgba(33, 76, 122, 40); color: white; border-radius: 10px; padding: 10px;")
         left_layout = QVBoxLayout(left_group)
-        left_group.setAlignment(Qt.AlignCenter)  # Выравниваем по центру
+        left_group.setAlignment(Qt.AlignCenter) 
         left_group.setStyleSheet("""
             background-color: rgba(33, 76, 122, 40);
             color: white;
@@ -52,7 +52,7 @@ class ProgramsPage(QWidget):
         browser_group = QGroupBox("Анализ браузеров / Веб-приложений")
         browser_group.setStyleSheet("background-color: rgba(33, 76, 122, 40); color: white; border-radius: 10px; padding: 10px;")
         browser_layout = QVBoxLayout(browser_group)
-        browser_group.setAlignment(Qt.AlignCenter)  # Выравниваем по центру
+        browser_group.setAlignment(Qt.AlignCenter) 
         browser_group.setStyleSheet("""
             background-color: rgba(33, 76, 122, 40);
             color: white;
@@ -79,7 +79,7 @@ class ProgramsPage(QWidget):
         game_process_group = QGroupBox("Анализ процесса игры")
         game_process_group.setStyleSheet("background-color: rgba(33, 76, 122, 40); color: white; border-radius: 10px; padding: 10px;")
         game_process_layout = QVBoxLayout(game_process_group)
-        game_process_group.setAlignment(Qt.AlignCenter)  # Выравниваем по центру
+        game_process_group.setAlignment(Qt.AlignCenter)
         game_process_group.setStyleSheet("""
             background-color: rgba(33, 76, 122, 40);
             color: white;
@@ -105,7 +105,7 @@ class ProgramsPage(QWidget):
         registry_group = QGroupBox("Анализ реестра")
         registry_group.setStyleSheet("background-color: rgba(33, 76, 122, 40); color: white; border-radius: 10px; padding: 10px;")
         registry_layout = QVBoxLayout(registry_group)
-        registry_group.setAlignment(Qt.AlignCenter)  # Выравниваем по центру
+        registry_group.setAlignment(Qt.AlignCenter) 
         registry_group.setStyleSheet("""
             background-color: rgba(33, 76, 122, 40);
             color: white;
@@ -146,13 +146,12 @@ class ProgramsPage(QWidget):
 
 
     def run_application(self, exe_file):
-        """Запуск приложения из локальной папки или из временной директории, если из exe"""
-        if getattr(sys, 'frozen', False):  # Проверяем, если приложение запущено как frozen (из .exe)
-            app_path = os.path.join(sys._MEIPASS, "app", exe_file)  # Используем _MEIPASS для доступа к временной папке
+        if getattr(sys, 'frozen', False):
+            app_path = os.path.join(sys._MEIPASS, "app", exe_file)
         else:
-            app_path = os.path.join(os.path.dirname(__file__), "app", exe_file)  # Обычный путь для скрипта
+            app_path = os.path.join(os.path.dirname(__file__), "app", exe_file)
 
         if os.path.exists(app_path):
-            subprocess.Popen([app_path])  # Запуск приложения
+            subprocess.Popen([app_path]) 
         else:
             print(f"Приложение {exe_file} не найдено в папке app.")

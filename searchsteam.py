@@ -3,13 +3,11 @@ import vdf
 import winreg
 
 def get_all_drives():
-    """Получает список доступных дисков в системе (C:, D:, E:, ...)."""
     from string import ascii_uppercase
     available_drives = [f"{d}:\\" for d in ascii_uppercase if os.path.exists(f"{d}:\\")]
     return available_drives
 
 def search_steam_on_drives():
-    """Ищет папку Steam на всех дисках (C:, D:, E:, ...)."""
     for drive in get_all_drives():
         steam_path = os.path.join(drive, "Steam")
         if os.path.exists(os.path.join(steam_path, "config", "loginusers.vdf")):
@@ -17,7 +15,6 @@ def search_steam_on_drives():
     return None
 
 def get_steam_path():
-    """Определяет путь к установке Steam, проверяя стандартные пути, реестр и все диски."""
     possible_paths = [
         r'C:\Program Files (x86)\Steam',
         r'C:\Program Files\Steam',
@@ -43,11 +40,9 @@ def get_steam_path():
     except FileNotFoundError:
         pass
 
-    # Если в стандартных местах и в реестре не нашли — ищем на всех дисках
     return search_steam_on_drives()
 
 def get_loginusers_vdf_path():
-    """Возвращает путь к loginusers.vdf или None, если файл не найден."""
     steam_path = get_steam_path()
     if steam_path:
         return os.path.join(steam_path, 'config', 'loginusers.vdf')

@@ -5,11 +5,10 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, Q
 from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QDesktopServices
-from pypresence import Presence  # Для Discord Rich Presence
+from pypresence import Presence 
 import win32api
 import win32con
 
-# Импортируем страницы
 from programs import ProgramsPage
 from steam import SteamPage
 from other import OtherPage
@@ -18,9 +17,6 @@ from searchsteam import get_loginusers_vdf_path
 
 
 
-
-
-# Функция для проверки прав администратора
 def is_admin():
     try:
         return ctypes.windll.shell32.IsUserAnAdmin() != 0
@@ -29,24 +25,20 @@ def is_admin():
 
 # Функция для перезапуска скрипта с правами администратора
 def run_as_admin():
-    if sys.argv[-1] != 'asadmin':  # Если скрипт еще не был запущен с правами
+    if sys.argv[-1] != 'asadmin':
         # Перезапуск с правами администратора
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join([sys.argv[0], 'asadmin']), None, 1)
         sys.exit()
 
-# Проверка, если скрипт не запущен с правами, перезапускаем с ними
 if not is_admin():
     run_as_admin()
 
 def resource_path(relative_path):
     """Получаем абсолютный путь к ресурсу (для разных сборщиков и для AppData)."""
     try:
-        # Проверка для PyInstaller (или других упаковщиков, которые используют _MEIPASS)
         base_path = sys._MEIPASS
     except Exception:
-        # Если не _MEIPASS, используем текущую директорию или путь из AppData
-        # Попробуем использовать AppData для хранения ресурсов, если не в режиме разработки
-        app_data_path = os.path.join(os.getenv('APPDATA'), 'MyApp')  # Пример пути для AppData
+        app_data_path = os.path.join(os.getenv('APPDATA'), 'MyApp')
         if not os.path.exists(app_data_path):
             os.makedirs(app_data_path)
         base_path = app_data_path
@@ -60,30 +52,32 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("purecs2 CheckerCheat")
         self.setFixedSize(1200, 700)
 
-        # Главное окно с горизонтальным разделением
+        # Главное окно 
         main_layout = QHBoxLayout()
         central_widget = QWidget()
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
-        # Устанавливаем фон
         background_path = resource_path("assets/fon.png")
         self.background_label = QLabel(central_widget)
         self.background_label.setPixmap(QPixmap(background_path))
         self.background_label.setScaledContents(True)
         self.background_label.setGeometry(0, 0, 1200, 700)
-        self.background_label.lower()  # Отправляем фон на задний план
+        self.background_label.lower()
 
         # Discord Rich Presence
-        self.discord_client_id = "1348517808975118366"  
-        self.discord_rpc = Presence(self.discord_client_id)
-        self.discord_rpc.connect()
-        self.discord_rpc.update(state="Using purecs2 CheckerCheat", details="Main Menu")
+        try:
+            self.discord_client_id = "1348517808975118366"  
+            self.discord_rpc = Presence(self.discord_client_id)
+            self.discord_rpc.connect()
+            self.discord_rpc.update(state="purecs2 CheckerCheat", details="purecs2 Checker Cheat v1.1 | Developer - Immanuel")
+        except Exception as e:
+            print(f"press F{e}")
 
         # Левая панель (Навигация)
         self.nav_panel = QWidget()
         self.nav_panel.setFixedWidth(300)
-        self.nav_panel.setStyleSheet("background: transparent;")  # Делаем панель прозрачной
+        self.nav_panel.setStyleSheet("background: transparent;")
         nav_layout = QVBoxLayout(self.nav_panel)
 
         # Логотип
@@ -108,7 +102,7 @@ class MainWindow(QMainWindow):
         menu_items = ["Программы", "Steam", "Другое"]
         for item in menu_items:
             btn = QPushButton(item)
-            btn.setFixedSize(260, 50)  # 250px ширина, 50px высота
+            btn.setFixedSize(260, 50)  # ширина/высота
             btn.setStyleSheet("""
                 color: white;
                 background-color: rgba(44, 109, 177, 1);
@@ -122,11 +116,10 @@ class MainWindow(QMainWindow):
             nav_layout.addWidget(btn)
             self.buttons.append(btn)
 
-        # Контейнер для соцсетей
         social_container = QWidget()
         social_layout = QHBoxLayout(social_container)
-        social_layout.setSpacing(13)  # Отступ в 13px между иконками
-        social_layout.setAlignment(Qt.AlignBottom)  # Выровнять влево и вниз
+        social_layout.setSpacing(13)
+        social_layout.setAlignment(Qt.AlignBottom)
 
         # Discord (кликабельное)
         ds_image_path = resource_path("assets/ds.png")
@@ -163,14 +156,13 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(self.nav_panel)
         main_layout.addWidget(self.main_content, 1)
 
-        # Устанавливаем начальную активную вкладку
         self.set_active_button(self.buttons[0], "Программы")
 
     def site_link(self, event):
         QDesktopServices.openUrl(QUrl("https://purecs2.ru/")) 
 
     def ds_link(self, event):
-        QDesktopServices.openUrl(QUrl("https://discord.gg/purecs2/")) 
+        QDesktopServices.openUrl(QUrl("https://discord.com/invite/purecs2/")) 
 
     def tg_link(self, event):
         QDesktopServices.openUrl(QUrl("https://t.me/purecs2/")) 
@@ -198,18 +190,15 @@ class MainWindow(QMainWindow):
         """)
         self.active_button = button
 
-        # Показать контент выбранной страницы
         self.show_page(page_name)
 
     def show_page(self, page_name):
-        # Очистить текущий контент
         for i in range(self.main_content.layout().count()):
             item = self.main_content.layout().itemAt(i)
             widget = item.widget()
             if widget:
                 widget.deleteLater()
 
-        # Создать новый контент для выбранной страницы
         if page_name == "Программы":
             page_content = ProgramsPage()
         elif page_name == "Steam":

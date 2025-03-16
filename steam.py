@@ -9,14 +9,10 @@ import sys
 from searchsteam import get_loginusers_vdf_path
 
 def resource_path(relative_path):
-    """Получаем абсолютный путь к ресурсу (для разных сборщиков и для AppData)."""
     try:
-        # Проверка для PyInstaller (или других упаковщиков, которые используют _MEIPASS)
         base_path = sys._MEIPASS
     except Exception:
-        # Если не _MEIPASS, используем текущую директорию или путь из AppData
-        # Попробуем использовать AppData для хранения ресурсов, если не в режиме разработки
-        app_data_path = os.path.join(os.getenv('APPDATA'), 'MyApp')  # Пример пути для AppData
+        app_data_path = os.path.join(os.getenv('APPDATA'), 'MyApp') 
         if not os.path.exists(app_data_path):
             os.makedirs(app_data_path)
         base_path = app_data_path
@@ -47,7 +43,6 @@ class SteamPage(QWidget):
         self.load_steam_accounts()
 
     def load_steam_accounts(self):
-        """Загружает аккаунты из файла loginusers.vdf и выводит их в список"""
         steam_accounts = self.read_vdf_file()
 
         if steam_accounts:
@@ -57,7 +52,6 @@ class SteamPage(QWidget):
             print("Не удалось найти или загрузить аккаунты из файла.")
 
     def read_vdf_file(self):
-        """Читает файл loginusers.vdf и извлекает данные аккаунтов"""
         vdf_file_path = get_loginusers_vdf_path()
 
         
@@ -89,12 +83,11 @@ class SteamPage(QWidget):
         return accounts
 
     def get_avatar(self, steamid):
-        """Получает путь к аватарке из папки avatarcache"""
         avatar_cache_path = os.path.expandvars(r'C:\Program Files (x86)\Steam\config\avatarcache')
-        avatar_file = os.path.join(avatar_cache_path, f'{steamid}.jpg')  # Попробуем с расширением .jpg
+        avatar_file = os.path.join(avatar_cache_path, f'{steamid}.jpg')
 
         if not os.path.exists(avatar_file):
-            avatar_file = os.path.join(avatar_cache_path, f'{steamid}.png')  # Также попробуем .png
+            avatar_file = os.path.join(avatar_cache_path, f'{steamid}.png')
 
         # Если аватарка не найдена, используем "noava.png"
         if not os.path.exists(avatar_file):
@@ -103,10 +96,8 @@ class SteamPage(QWidget):
         return avatar_file
 
     def display_account(self, account_info):
-        """Отображает информацию о аккаунте в списке"""
         list_item = QListWidgetItem()
 
-        # Создание виджета для отображения информации
         account_widget = QWidget()
         account_layout = QHBoxLayout()
 
@@ -126,8 +117,7 @@ class SteamPage(QWidget):
         account_layout.addWidget(avatar)
 
         def convert_timestamp_to_msk(timestamp):
-            """Преобразует Unix Timestamp в дату в формате MSK."""
-            # Преобразуем строку в число
+            # Преобразует Unix Timestamp в дату в формате MSK.
             timestamp = int(timestamp) if isinstance(timestamp, str) else timestamp
             utc_time = datetime.utcfromtimestamp(timestamp)  # Время в UTC
             msk_time = utc_time + timedelta(hours=3)  # Добавляем 3 часа для MSK
