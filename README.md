@@ -13,7 +13,7 @@
 ## 🛠️ Установка и запуск
 ```bash
 git clone https://github.com/immanuel1618/purecs2-Checker-Cheat.git
-cd purecs2_checkercheat
+cd purecs2-Checker-Cheat
 pip install -r requirements.txt
 python main.py
 ```
