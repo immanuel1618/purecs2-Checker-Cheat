@@ -49,6 +49,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("purecs2 CheckerCheat")
+        self.setWindowIcon(QIcon(resource_path("logo.ico")))
         self.setFixedSize(1200, 700)
 
         # Главное окно 
