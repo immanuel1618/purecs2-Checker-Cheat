@@ -36,9 +36,10 @@ pyinstaller --icon=logo.ico --onefile --windowed --noupx --add-data "app;app" --
 ➜ Файл `loginusers.vdf` может быть на другом диске, попробуй поискать.
 
 ## 👨‍💻 Контакты
-📌 Site: [бибабуп](https://immanuel.nna1618.com/)  
+🌐 Site: [бибабуп](https://immanuel.nna1618.com/)  
 📌 Telegram: [@StreetPN](https://t.me/StreetPN)  
-📌 GitHub: [immanuel1618](https://github.com/immanuel1618)
+🦈 GitHub: [immanuel1618](https://github.com/immanuel1618)
+✨ Discord chanel [StreetPN](https://discord.gg/xXk2VTU5)
 
 ---
 💙 Сделано с душой. Если проект полезен — жми ⭐ в репо!
