@@ -38,7 +38,7 @@ pyinstaller --icon=logo.ico --onefile --windowed --noupx --add-data "app;app" --
 ## 👨‍💻 Контакты
 🌐 Site: [бибабуп](https://immanuel.nna1618.com/)  
 📌 Telegram: [@StreetPN](https://t.me/StreetPN)  
-🦈 GitHub: [immanuel1618](https://github.com/immanuel1618)
+🦈 GitHub: [immanuel1618](https://github.com/immanuel1618)  
 ✨ Discord chanel [StreetPN](https://discord.gg/xXk2VTU5)
 
 ---
