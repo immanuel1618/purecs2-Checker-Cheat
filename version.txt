@@ -17,12 +17,12 @@ VSVersionInfo(
           '040904b0',
           [
             StringStruct('CompanyName', 'Immanuel'),
-            StringStruct('FileDescription', 'purecs2 Checker Cheat v1.1.0 | Developer - Immanuel'),
-            StringStruct('FileVersion', '1.1.0.0'),
+            StringStruct('FileDescription', 'purecs2 Checker Cheat v1.2.0 | Developer - Immanuel'),
+            StringStruct('FileVersion', '1.2.0.0'),
             StringStruct('InternalName', 'purecs2 CheckerCheat'),
             StringStruct('OriginalFilename', 'purecs2CC.exe'),
             StringStruct('ProductName', 'Checker Cheat'),
-            StringStruct('ProductVersion', '1.1.0.0')
+            StringStruct('ProductVersion', '1.2.0.0')
           ]
         )
       ]

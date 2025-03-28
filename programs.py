@@ -101,8 +101,8 @@ class ProgramsPage(QWidget):
 
         right_panel.addWidget(game_process_group)
 
-        # Анализ реестра
-        registry_group = QGroupBox("Анализ реестра")
+        # Анализ реестра и Trace
+        registry_group = QGroupBox("Реестр и Trace")
         registry_group.setStyleSheet("background-color: rgba(33, 76, 122, 40); color: white; border-radius: 10px; padding: 10px;")
         registry_layout = QVBoxLayout(registry_group)
         registry_group.setAlignment(Qt.AlignCenter) 
@@ -117,6 +117,7 @@ class ProgramsPage(QWidget):
 
         registry_buttons = [
             ("Registry Finder", "RegistryFinder.exe"),
+            ("JournalTrace", "JournalTrace.exe"),
         ]
 
         for label, exe_file in registry_buttons:
@@ -152,6 +153,30 @@ class ProgramsPage(QWidget):
             app_path = os.path.join(os.path.dirname(__file__), "app", exe_file)
 
         if os.path.exists(app_path):
-            subprocess.Popen([app_path]) 
+            subprocess.Popen([app_path])  
+            
+            if exe_file == "Everything.exe":
+                txt_file = os.path.join(os.path.dirname(app_path), "./txt/everything.txt")
+                if os.path.exists(txt_file):
+                    subprocess.Popen(["notepad.exe", txt_file])  
+                else:
+                    print(f"Файл everything.txt не найден рядом с {exe_file}.")
+            
+            
+            if exe_file == "LastActivityView.exe":
+                txt_file = os.path.join(os.path.dirname(app_path), "./txt/LASTACTIVITY.txt")
+                if os.path.exists(txt_file):
+                    subprocess.Popen(["notepad.exe", txt_file])  
+                else:
+                    print(f"Файл LASTACTIVITY.txt не найден рядом с {exe_file}.")
+
+            
+            if exe_file == "RegistryFinder.exe":
+                txt_file = os.path.join(os.path.dirname(app_path), "./txt/regdit.txt")
+                if os.path.exists(txt_file):
+                    subprocess.Popen(["notepad.exe", txt_file])  
+                else:
+                    print(f"Файл regdit.txt не найден рядом с {exe_file}.")
+
         else:
             print(f"Приложение {exe_file} не найдено в папке app.")

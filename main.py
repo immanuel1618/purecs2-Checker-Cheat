@@ -1,6 +1,7 @@
 import sys
 import os
 import ctypes
+import shutil
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGraphicsOpacityEffect
 from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import Qt, QUrl
@@ -10,6 +11,7 @@ import win32api
 import win32con
 
 from programs import ProgramsPage
+from noprograms import NoProgramsPage
 from steam import SteamPage
 from other import OtherPage
 from searchsteam import get_loginusers_vdf_path
@@ -33,16 +35,29 @@ def run_as_admin():
 if not is_admin():
     run_as_admin()
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        app_data_path = os.path.join(os.getenv('APPDATA'), 'MyApp')
-        if not os.path.exists(app_data_path):
-            os.makedirs(app_data_path)
-        base_path = app_data_path
 
-    return os.path.join(base_path, relative_path)
+def resource_path(relative_path):
+    """Возвращает путь к файлу, поддерживая как PyInstaller, так и режим разработки."""
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS  # PyInstaller использует временную папку
+    else:
+        base_path = os.path.dirname(__file__)  # В режиме разработки берем из текущей директории
+
+    full_path = os.path.join(base_path, relative_path)
+
+    # Если файла нет, пробуем брать из APPDATA
+    if not os.path.exists(full_path):
+        app_data_path = os.path.join(os.getenv('APPDATA'), 'MyApp', relative_path)
+        
+        # Если в APPDATA нет файла, возможно, его надо скопировать
+        if not os.path.exists(app_data_path):
+            os.makedirs(os.path.dirname(app_data_path), exist_ok=True)
+            if os.path.exists(full_path):  # Проверяем, есть ли файл в исходной папке
+                shutil.copy(full_path, app_data_path)
+
+        return app_data_path
+
+    return full_path
 
 
 class MainWindow(QMainWindow):
@@ -70,7 +85,7 @@ class MainWindow(QMainWindow):
             self.discord_client_id = "1348517808975118366"  
             self.discord_rpc = Presence(self.discord_client_id)
             self.discord_rpc.connect()
-            self.discord_rpc.update(state="purecs2 CheckerCheat", details="purecs2 Checker Cheat v1.1 | Developer - Immanuel")
+            self.discord_rpc.update(state="purecs2 CheckerCheat", details="purecs2 Checker Cheat v1.2 | Developer - Immanuel")
         except Exception as e:
             print(f"press F{e}")
 
@@ -98,7 +113,7 @@ class MainWindow(QMainWindow):
         # Кнопки меню
         self.buttons = []
         self.active_button = None
-        menu_items = ["Программы", "Steam", "Другое"]
+        menu_items = ["С програмамми", "Без программ", "Steam", "Другое"]
         for item in menu_items:
             btn = QPushButton(item)
             btn.setFixedSize(260, 50)  # ширина/высота
@@ -155,7 +170,24 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(self.nav_panel)
         main_layout.addWidget(self.main_content, 1)
 
-        self.set_active_button(self.buttons[0], "Программы")
+        self.programs_page = ProgramsPage()
+        self.no_programs_page = NoProgramsPage()
+        self.steam_page = SteamPage()
+        self.other_page = OtherPage()
+
+        # Добавляем страницы в layout
+        self.main_layout.addWidget(self.programs_page)
+        self.main_layout.addWidget(self.no_programs_page)
+        self.main_layout.addWidget(self.steam_page)
+        self.main_layout.addWidget(self.other_page)
+
+        # Скрываем все страницы изначально
+        self.programs_page.hide()
+        self.no_programs_page.hide()
+        self.steam_page.hide()
+        self.other_page.hide()
+
+        self.set_active_button(self.buttons[0], "С програмамми")
 
     def site_link(self, event):
         QDesktopServices.openUrl(QUrl("https://purecs2.ru/")) 
@@ -192,22 +224,22 @@ class MainWindow(QMainWindow):
         self.show_page(page_name)
 
     def show_page(self, page_name):
-        for i in range(self.main_content.layout().count()):
-            item = self.main_content.layout().itemAt(i)
-            widget = item.widget()
-            if widget:
-                widget.deleteLater()
+        # Скрываем все страницы
+        self.programs_page.hide()
+        self.no_programs_page.hide()
+        self.steam_page.hide()
+        self.other_page.hide()
 
-        if page_name == "Программы":
-            page_content = ProgramsPage()
+        # Показываем только выбранную страницу
+        if page_name == "С програмамми":
+            self.programs_page.show()
+        elif page_name == "Без программ":
+            self.no_programs_page.show()
         elif page_name == "Steam":
-            page_content = SteamPage()
+            self.steam_page.show()
         elif page_name == "Другое":
-            page_content = OtherPage()
-        #elif page_name == "USB":
-        #    page_content = USBPage()
+            self.other_page.show()
 
-        self.main_layout.addWidget(page_content)
 
 if __name__ == "__main__":
     app = QApplication([])

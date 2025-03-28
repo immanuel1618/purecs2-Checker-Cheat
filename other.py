@@ -71,7 +71,6 @@ class OtherPage(QWidget):
         # Левое окно
         left_layout = QVBoxLayout()
         self.system_info_group = QGroupBox("Системная информация")
-        left_layout.setAlignment(Qt.AlignLeft)
         self.system_info_group.setStyleSheet("""
             background-color: rgba(33, 76, 122, 40); 
             color: white;
@@ -97,56 +96,8 @@ class OtherPage(QWidget):
 
         self.system_info_group.setLayout(system_info_layout)
 
-
-        # Правое окно
-        right_layout = QVBoxLayout()
-        right_layout.setAlignment(Qt.AlignCenter) 
-
-        # Кнопка "Использование данных"
-        self.data_usage_button = QPushButton("Использование данных")
-        self.data_usage_button.setStyleSheet("""
-            color: white;
-            background-color: #225081;
-            border: none;
-            border-radius: 15px;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-        """)
-        self.data_usage_button.clicked.connect(self.open_wifi_settings)
-        right_layout.addWidget(self.data_usage_button)
-
-        # Кнопка "Службы Windows"
-        self.windows_services_button = QPushButton("Службы Windows")
-        self.windows_services_button.setStyleSheet("""
-            color: white;
-            background-color: #225081;
-            border: none;
-            border-radius: 15px;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-        """)
-        self.windows_services_button.clicked.connect(self.open_windows_services)
-        right_layout.addWidget(self.windows_services_button)
-
-        # Кнопка "Открыть экранную клавиатуру"
-        self.on_screen_keyboard_button = QPushButton("Открыть экранную клавиатуру")
-        self.on_screen_keyboard_button.setStyleSheet("""
-            color: white;
-            background-color: #225081;
-            border: none;
-            border-radius: 15px;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-        """)
-        self.on_screen_keyboard_button.clicked.connect(self.open_on_screen_keyboard)
-        right_layout.addWidget(self.on_screen_keyboard_button)
-
         # Добавление правого окна в основное
         main_layout.addLayout(left_layout)
-        main_layout.addLayout(right_layout)
 
 
         # Получения данных о системе
@@ -167,15 +118,3 @@ class OtherPage(QWidget):
             self.gpu_label.setText(value)
         elif label == "Материнская плата:":
             self.motherboard_label.setText(value)
-
-    def open_wifi_settings(self):
-        """Открывает настройки Wi-Fi"""
-        subprocess.Popen('start ms-settings:datausage', shell=True)
-
-    def open_windows_services(self):
-        """Открывает список служб Windows"""
-        subprocess.Popen('services.msc', shell=True)
-
-    def open_on_screen_keyboard(self):
-        """Открывает экранную клавиатуру"""
-        subprocess.Popen('osk', shell=True)

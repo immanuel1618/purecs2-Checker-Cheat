@@ -1,0 +1,5 @@
+Первый путь: 
+             Компьютер\HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\bam\State\UserSettings
+
+Второй путь: 
+             Компьютер\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store
